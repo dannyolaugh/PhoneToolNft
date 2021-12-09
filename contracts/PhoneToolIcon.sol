@@ -16,6 +16,7 @@ contract PhoneToolIcon is ERC721Enumerable {
     mapping(string => bool) svgToMinted;
     mapping(uint256 => string) internal tokenIdToSvg;
     mapping(address => string) addressToAlias;
+    mapping(string => address) aliasToAddress;
     mapping(string => bool) aliasToMintedFoundationsIcon;
     mapping(string => bool) aliasToMintedQuipsterIcon;
 
@@ -54,6 +55,7 @@ contract PhoneToolIcon is ERC721Enumerable {
 
         svgToMinted[tokenIdToSvg[thisTokenId]] = true;
         addressToAlias[msg.sender] = _alias;
+        aliasToAddress[_alias] = msg.sender;
         aliasToMintedFoundationsIcon[addressToAlias[msg.sender]] = true;
 
         _mint(msg.sender, thisTokenId);
@@ -72,6 +74,7 @@ contract PhoneToolIcon is ERC721Enumerable {
         tokenIdToSvg[thisTokenId] = svgContract.getMobileBetaSvg();
         svgToMinted[tokenIdToSvg[thisTokenId]] = true;
         addressToAlias[msg.sender] = _alias;
+        aliasToAddress[_alias] = msg.sender;
         aliasToMintedQuipsterIcon[addressToAlias[msg.sender]] = true;
 
         _mint(msg.sender, thisTokenId);
@@ -118,6 +121,14 @@ contract PhoneToolIcon is ERC721Enumerable {
             tokensId[i] = tokenOfOwnerByIndex(_wallet, i);
         }
         return tokensId;
+    }
+
+    function getAddressFromAlias(string memory _alias)
+      public
+      view
+      returns (address)
+    {
+        return aliasToAddress[_alias];
     }
 
     /*
