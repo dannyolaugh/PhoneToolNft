@@ -53,6 +53,23 @@ contract PhoneToolIcon is ERC721Enumerable {
         _mint(msg.sender, thisTokenId);
     }
 
+    function mintQuipsterIcon(string memory _alias) public {
+        uint256 _totalSupply = totalQuipsterSupply();
+        require(_totalSupply < MAX_SUPPLY);
+        require(!PhoneToolIconLibrary.isContract(msg.sender));
+        require(aliasToMintedFoundationsIcon[addressToAlias[msg.sender]] != true);
+
+        uint256 thisTokenId = _totalSupply;
+
+        // TODO: Add the SVG Code here
+        tokenIdToSvg[thisTokenId] = '';
+        svgToMinted[tokenIdToSvg[thisTokenId]] = true;
+        addressToAlias[msg.sender] = _alias;
+        aliasToMintedFoundationsIcon[addressToAlias[msg.sender]] = true;
+
+        _mint(msg.sender, thisTokenId);
+    }
+
     /*
  ____     ___   ____  ___        _____  __ __  ____     __ ______  ____  ___   ____   _____
 |    \   /  _] /    ||   \      |     ||  |  ||    \   /  ]      ||    |/   \ |    \ / ___/
